@@ -27,8 +27,10 @@ if __name__ == "__main__":
 App runs on host 0.0.0.0 for external access
 
 Uses environment variable PORT for dynamic port assignment
+```
 
 3. Dockerfile
+```
 FROM ubuntu:22.04
 COPY . /app
 WORKDIR /app
@@ -44,8 +46,10 @@ Copies project files to /app
 Installs Python & dependencies from requirements.txt
 
 Container starts Flask app on startup
+```
 
 4. Docker Commands
+```   
 Build Image
 docker build -t flaskapp:latest .
 Run Container
@@ -57,7 +61,9 @@ docker run -d -p 5000:5000 flaskapp
 Multiple Containers on Same Host
 docker run -d -p 5001:5000 flaskapp
 docker run -d -p 5002:5000 flaskapp
+```
 5. Issues Faced & Fixes
+```
 Dockerfile COPY error
 
 COPY requires at least two arguments
@@ -96,7 +102,9 @@ exec: ".": executable file not found
 Fix: Run container with bash or CMD:
 
 docker run -it <image_name> /bin/bash
+```
 6. EC2 Access
+``` 
 Flask app URL:
 
 http://<EC2-Public-IP>:5000
@@ -104,10 +112,13 @@ http://<EC2-Public-IP>:5001
 Test with curl:
 
 curl http://<EC2-Public-IP>:5000
+```
 7. Notes
+```
 Enter container interactive shell:
 
 docker run -it <image_name> /bin/bash
 Clean up old containers to avoid port conflicts
 
 Use docker ps -a to check all containers
+```
