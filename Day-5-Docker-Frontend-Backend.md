@@ -5,24 +5,25 @@ This document contains step-by-step instructions to set up a React frontend and 
 ## i. Install Prerequisites
 
 Install Docker:
-
+```
 sudo yum update -y
 sudo yum install -y docker
 sudo systemctl start docker
 sudo systemctl enable docker
-
+```
 Install Git:
-
+```
 sudo yum install -y git
-
+```
 ## ii. Clone Project Repository
-
+```
 git clone <REPO_URL>
 cd 2nd10WeeksofCloudOps-main/
+```
 ---
 
 ## Folder Structure
-
+```
 2nd10WeeksofCloudOps-main/
 │
 ├── backend/
@@ -39,54 +40,55 @@ cd 2nd10WeeksofCloudOps-main/
 │   └── src/
 │       └── config.js
 └── docker-compose.yaml (optional)
-
+```
 ---
 
 ## 1. Backend Setup
 
-Folder: backend/
+- Folder: backend/
 
 ### Dockerfile
 
-Already present, no changes required if backend runs on port 5000.
+- Already present, no changes required if backend runs on port 5000.
 
 ### index.js
 
-Make sure backend listens on port 5000:
-
+- Make sure backend listens on port 5000:
+```
 app.listen(5000, () => {
   console.log("Connected to backend on port 5000.");
 });
-
+```
 ### Commands
 
 # Build backend image
-docker build -t backend1 .
+- docker build -t backend1 .
 
 # Remove old container if exists
-docker rm -f backend1 2>/dev/null
+- docker rm -f backend1 2>/dev/null
 
 # Run backend container
-docker run -d --name backend1 --network app-network -p 5000:5000 backend1
+- docker run -d --name backend1 --network app-network -p 5000:5000 backend1
 
 # Verify
-docker ps
+- docker ps
 
 ---
 
 ## 2. Frontend Setup
 
-Folder: client/
+- Folder: client/
 
 ### src/config.js
 
 Change API URL to use relative path via Nginx:
-
+```
 // Old: const API_URL = "http://<EC2-IP>:5000";
 const API_URL = "/api";
-
+```
 ### Dockerfile
 
+```
 # Stage 1: Build React
 FROM node:18 AS build
 WORKDIR /app
@@ -94,8 +96,10 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
+```
 
 # Stage 2: Serve with Nginx
+
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY proxy.conf /etc/nginx/conf.d/default.conf
@@ -104,7 +108,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ### proxy.conf
 
-server {
+    server {
     listen 80;
     server_name _;
 
@@ -124,7 +128,7 @@ server {
     location / {
         try_files $uri $uri/ /index.html;
     }
-}
+    }
 
 ### Commands
 
