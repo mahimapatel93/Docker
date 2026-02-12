@@ -86,8 +86,8 @@ Change API URL to use relative path via Nginx:
 // Old: const API_URL = "http://<EC2-IP>:5000";
 const API_URL = "/api";
 ```
-### Dockerfile
 
+### Dockerfile
 ```
 # Stage 1: Build React
 FROM node:18 AS build
@@ -96,15 +96,14 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-```
 
 # Stage 2: Serve with Nginx
-
-    FROM nginx:alpine
-    COPY --from=build /app/build /usr/share/nginx/html
-    COPY proxy.conf /etc/nginx/conf.d/default.conf
-    EXPOSE 80
-    CMD ["nginx", "-g", "daemon off;"]
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY proxy.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
 
 ### proxy.conf
 
