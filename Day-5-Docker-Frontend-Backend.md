@@ -204,5 +204,5 @@ docker run -d --name <container_name> --network app-network -p <host_port>:<cont
 
 ---
 
-Done! Now your frontend and backend are running in Docker with Nginx reverse proxy and working API calls.
-Result: Frontend and backend are running in Docker with internal communication via Docker network, and Nginx handles API reverse proxy.
+*  Done! Now your frontend and backend are running in Docker with Nginx reverse proxy and working API calls.
+*  Result: Frontend and backend are running in Docker with internal communication via Docker network, and Nginx handles API reverse proxy.
