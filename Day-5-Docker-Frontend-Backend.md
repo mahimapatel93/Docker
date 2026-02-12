@@ -62,16 +62,24 @@ app.listen(5000, () => {
 ### Commands
 
 # Build backend image
-- docker build -t backend1 .
+```
+ docker build -t backend1 .
+```
 
 # Remove old container if exists
-- docker rm -f backend1 2>/dev/null
+```
+ docker rm -f backend1 2>/dev/null
+```
 
 # Run backend container
-- docker run -d --name backend1 --network app-network -p 5000:5000 backend1
+```
+ docker run -d --name backend1 --network app-network -p 5000:5000 backend1
+```
 
 # Verify
-- docker ps
+```
+ docker ps
+```
 
 ---
 
@@ -132,49 +140,67 @@ CMD ["nginx", "-g", "daemon off;"]
 ### Commands
 
 # Build frontend image
+```
 docker build -t frontend1 .
-
+```
 # Remove old container if exists
+```
 docker rm -f frontend1 2>/dev/null
+```
 
 # Run frontend container
+```
 docker run -d --name frontend1 --network app-network -p 81:80 frontend1
+```
 
 # Verify
+```
 docker ps
+```
 
 ---
 
 ## 3. Docker Network
 
 # Create network if not exists
+```
 docker network create app-network
+```
 
 Ensure frontend and backend containers are on the same network so that Nginx can communicate with backend using backend1:5000.
 
 ---
 
 ## 4. Testing
-
+```
 * Open in browser: http://<EC2-PUBLIC-IP>:81
 * Frontend React app should load.
 * API requests to /api/... should be proxied to backend successfully.
+```
 
 ---
 
 ## 5. Useful Commands
 
 # Check logs
+```
 docker logs frontend1
+```
 
 # Remove container forcefully
+```
 docker rm -f frontend1 2>/dev/null
+```
 
 # Build image
+```
 docker build -t <image_name> .
+```
 
 # Run container
+```
 docker run -d --name <container_name> --network app-network -p <host_port>:<container_port> <image_name>
+```
 
 ---
 
