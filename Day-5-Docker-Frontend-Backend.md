@@ -17,7 +17,7 @@ sudo yum install -y git
 ```
 ## ii. Clone Project Repository
 ```
-git clone <REPO_URL>
+git clone https://github.com/CloudTechDevOps/2nd10WeeksofCloudOps-main.git
 cd 2nd10WeeksofCloudOps-main/
 ```
 ---
