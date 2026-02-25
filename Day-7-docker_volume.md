@@ -41,3 +41,88 @@ Delete Container → ✅ Data Safe
 
 ```bash
 docker volume create practice-volume
+
+Check volumes:
+
+docker volume ls
+2️⃣ Run Container with Volume
+docker run -it --name volume-test -v practice-volume:/data ubuntu
+
+Inside container:
+
+cd /data
+echo "Docker Volume Test" > file.txt
+ls
+exit
+3️⃣ Delete Container
+docker rm volume-test
+4️⃣ Run Again with Same Volume
+docker run -it --name volume-test2 -v practice-volume:/data ubuntu
+
+Check:
+
+cd /data
+ls
+cat file.txt
+
+✅ File will still exist.
+
+🔍 Where Docker Stores Volume Data?
+
+Check volume details:
+
+docker volume inspect practice-volume
+
+You will see something like:
+
+Mountpoint: /var/lib/docker/volumes/practice-volume/_data
+
+Check host path directly:
+
+ls /var/lib/docker/volumes/practice-volume/_data
+🗑 Remove Volume
+
+⚠️ Make sure container is removed first.
+
+docker rm volume-test2
+docker volume rm practice-volume
+🔥 Important Docker Volume Commands
+Purpose	Command
+List volumes	docker volume ls
+Create volume	docker volume create name
+Inspect volume	docker volume inspect name
+Remove volume	docker volume rm name
+Remove unused volumes	docker volume prune
+📦 Named Volume vs Bind Mount
+Named Volume (Recommended)
+-v volume-name:/container-path
+
+Docker manages storage automatically.
+
+Bind Mount
+-v /host/path:/container/path
+
+Uses a specific host directory.
+
+🚀 CI/CD Use Case
+
+In Jenkins pipeline:
+
+Every deployment:
+
+Container is removed
+
+Container is recreated
+
+Without volume → Data loss
+With volume → Data persists
+
+🎯 Interview One-Line Answer
+
+Docker volumes are used to persist container data by storing it outside the container lifecycle, ensuring data safety even if the container is deleted or recreated.
+
+✅ Summary
+Action	Data Status
+Container Restart	Safe
+Container Delete	Safe
+Volume Delete	Lost
